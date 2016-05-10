@@ -6556,13 +6556,19 @@ WebUtil.injectParamIfMissing = function (path, param, value) {
     }
 };
 
+Display.prototype.resizeAndScale = function(width, height, scale) {
+	this._prevDrawStyle = "";
+
+	this._fb_width = width;
+	this._fb_height = height;
+
+	this._rescale(scale);
+
+	this.viewportChangeSize();
+};
 
 angular.module('noVNC', []).directive('vnc', ['$timeout', function($timeout) {
 	'use strict';
-  function resizeAndScale(display, width, height, scale) {
-    display.resize(width, height);
-    display.set_scale(scale);
-  }
 	function newInterface(ui) {
 		var UI = angular.merge(ui, {
 			canvas: null,
@@ -6708,7 +6714,7 @@ angular.module('noVNC', []).directive('vnc', ['$timeout', function($timeout) {
 
 
 			disconnect: function() {
-				resizeAndScale(UI.rfb.get_display(), 0, 0, 1);
+				UI.rfb.get_display().resizeAndScale(0, 0, 1);
 				UI.rfb.disconnect();
 			},
 
@@ -6893,14 +6899,14 @@ angular.module('noVNC', []).directive('vnc', ['$timeout', function($timeout) {
 
 					if (display.scale) {
 						if (display.width && display.height) {
-							resizeAndScale(rfb.get_display(), display.width, display.height, display.scale);
+							rfb.get_display().resizeAndScale(display.width, display.height, display.scale);
 						} else {
 							if (display.width) {
-								resizeAndScale(rfb.get_display(), display.width, height, display.scale);
+								rfb.get_display().resizeAndScale(display.width, height, display.scale);
 							} else if (display.height) {
-								resizeAndScale(rfb.get_display(), width, display.height, display.scale);
+								rfb.get_display().resizeAndScale(width, display.height, display.scale);
 							} else {
-								resizeAndScale(rfb.get_display(), width, height, display.scale);
+								rfb.get_display().resizeAndScale(width, height, display.scale);
 							}
 						}
 						display.scale = rfb.get_display().get_scale();
@@ -6909,13 +6915,13 @@ angular.module('noVNC', []).directive('vnc', ['$timeout', function($timeout) {
 					if (display.fitTo) {
 						switch (display.fitTo) {
 							case 'width':
-								resizeAndScale(rfb.get_display(), width, height, 1*(display.width/width));
+								rfb.get_display().resizeAndScale(width, height, 1*(display.width/width));
 								break;
 							case 'height':
-								resizeAndScale(rfb.get_display(), width, height, 1*(display.height/height));
+								rfb.get_display().resizeAndScale(width, height, 1*(display.height/height));
 								break;
 							case 'scale':
-								resizeAndScale(rfb.get_display(), width, height, display.scale);
+								rfb.get_display().resizeAndScale(width, height, display.scale);
 								break;
 						}
 					}
@@ -6941,7 +6947,7 @@ angular.module('noVNC', []).directive('vnc', ['$timeout', function($timeout) {
 
 						Interface.canvas.style.border = '1px solid grey';
 
-						resizeAndScale(rfb.get_display(), width, height, 1);
+						rfb.get_display().resizeAndScale(width, height, 1);
 
 					} else {
 						if(document.cancelFullScreen) {
