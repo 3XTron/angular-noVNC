@@ -20,6 +20,7 @@ gulp.task('build-from-novnc', function() {
 		.pipe(replace(/Util.load_scripts = function/, 'Util.load_scripts = function () {}; var _none_ = function'))
 		.pipe(replace(/module.exports = {Inflate: Inflate};/, 'var inflator = {Inflate: Inflate};'))
 		.pipe(replace(/\.\.\/node_modules\/pako/g, 'pako'))
+		.pipe(replace('this.resize(240, 20);', 'this.resize(240, 180);')) // saner default size
 		.pipe(hf.header("var angular = require('angular');\n"))
 		.pipe(gulp.dest('./dist'))
 });
