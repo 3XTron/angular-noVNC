@@ -7750,7 +7750,7 @@ angular.module('noVNC', []).directive('vnc', ['$timeout', function($timeout) {
     display.resize(width, height);
     display.set_scale(scale);
   }
-	function newInterface() {
+	function newInterface(ui) {
 		var UI = {
 			canvas: null,
 			_settings : {},
@@ -7964,7 +7964,7 @@ angular.module('noVNC', []).directive('vnc', ['$timeout', function($timeout) {
 				}
 			},
 		};
-		return UI;
+		return angular.merge(ui, UI);
 	}
 
 	return {
@@ -7982,9 +7982,11 @@ angular.module('noVNC', []).directive('vnc', ['$timeout', function($timeout) {
 			style       : '=',
 			states      : '=',
 			logging     : '=',
+      interface   : '='
 		},
 		link: function(scope, iElement) {
-			var Interface = newInterface();
+			var Interface = scope.interface ? scope.interface : {};
+      newInterface(Interface);
 
 			Interface.canvas = iElement[0].childNodes[0];
 			Interface.states = scope.states;
