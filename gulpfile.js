@@ -9,14 +9,18 @@ var replace    = require('gulp-replace');
 
 var files = [
 	'base64', 'util', 'des', 'display', 'input', 'jsunzip', 'keyboard', 'keysym', 'keysymdef', 
-	'rfb', 'ui', 'websock', 'webutil'
+	'rfb'/*, 'ui'*/, 'websock', 'webutil'
 ];
 
+var scriptFiles = files.map(function (f) { return './noVNC/include/' + f + '.js'; });
+
 gulp.task('build-from-novnc', function() {
-	gulp.src(files.map(function (f) { return './noVNC/include/' + f + '.js'; }).concat('./lib/ui.js'))
+	gulp.src(['./noVNC/utils/inflator.partial.js'].concat(scriptFiles).concat('./lib/ui.js'))
 		.pipe(concat('index.js'))
 		.pipe(replace(/Util.load_scripts = function/, 'Util.load_scripts = function () {}; var _none_ = function'))
-		.pipe(hf.header("var angular = require('angular');\nvar inflator = require('pako');\n"))
+		.pipe(replace(/module.exports = {Inflate: Inflate};/, 'var inflator = {Inflate: Inflate};'))
+		.pipe(replace(/\.\.\/node_modules\/pako/g, 'pako'))
+		.pipe(hf.header("var angular = require('angular');\n"))
 		.pipe(gulp.dest('./dist'))
 });
 
