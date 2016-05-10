@@ -7751,7 +7751,7 @@ angular.module('noVNC', []).directive('vnc', ['$timeout', function($timeout) {
     display.set_scale(scale);
   }
 	function newInterface(ui) {
-		var UI = {
+		var UI = angular.merge(ui, {
 			canvas: null,
 			_settings : {},
 			rfb_state : 'loaded',
@@ -7963,8 +7963,8 @@ angular.module('noVNC', []).directive('vnc', ['$timeout', function($timeout) {
 					display.viewportChange(0, 0, new_w, new_h);
 				}
 			},
-		};
-		return angular.merge(ui, UI);
+		});
+		return UI;
 	}
 
 	return {
