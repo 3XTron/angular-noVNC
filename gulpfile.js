@@ -9,7 +9,7 @@ var replace    = require('gulp-replace');
 
 var files = [
 	'base64', 'util', 'des', 'display', 'input', 'jsunzip', 'keyboard', 'keysym', 'keysymdef', 
-	'rfb'/*, 'ui'*/, 'websock', 'webutil'
+	'rfb', 'websock', 'webutil'
 ];
 
 var scriptFiles = files.map(function (f) { return './noVNC/include/' + f + '.js'; });
