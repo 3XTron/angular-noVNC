@@ -4,6 +4,21 @@ var webserver  = require('gulp-webserver');
 var jshint     = require('gulp-jshint');
 var uglify     = require('gulp-uglify');
 var plato      = require('gulp-plato');
+var hf         = require('gulp-headerfooter');
+var replace    = require('gulp-replace');
+
+var files = [
+	'base64', 'util', 'des', 'display', 'input', 'jsunzip', 'keyboard', 'keysym', 'keysymdef', 
+	'rfb', 'ui', 'websock', 'webutil', 'inflator'
+];
+
+gulp.task('build-from-novnc', function() {
+	gulp.src(files.map(function (f) { return './noVNC/include/' + f + '.js'; }).concat('./lib/ui.js'))
+		.pipe(concat('index.js'))
+		.pipe(replace(/Util.load_scripts = function/, 'Util.load_scripts = function () {}; var _none_ = function'))
+		.pipe(hf.header("var angular = require('angular');\n"))
+		.pipe(gulp.dest('./dist'))
+});
 
 gulp.task('build-concat', function() {
 	gulp.src("./lib/*.js")
@@ -20,7 +35,7 @@ gulp.task('build-uglify', function() {
 		.pipe(gulp.dest('./dist'));
 });
 
-gulp.task('build', ['build-concat', 'build-uglify']);
+gulp.task('build', [/*'build-concat', 'build-uglify',*/ 'build-from-novnc']);
 
 gulp.task('webserver', function() {
 	gulp.src('./')
