@@ -16,7 +16,8 @@ gulp.task('build-from-novnc', function() {
 	gulp.src(files.map(function (f) { return './noVNC/include/' + f + '.js'; }).concat('./lib/ui.js'))
 		.pipe(concat('index.js'))
 		.pipe(replace(/Util.load_scripts = function/, 'Util.load_scripts = function () {}; var _none_ = function'))
-		.pipe(hf.header("var angular = require('angular');\n"))
+		.pipe(hf.header("require(['angular'], function (angular) {\n"))
+		.pipe(hf.footer("});\n"))
 		.pipe(gulp.dest('./dist'))
 });
 
