@@ -6677,6 +6677,10 @@ angular.module('noVNC', []).directive('vnc', ['$timeout', function($timeout) {
 				UI.rfb.sendCtrlAltDel();
 			},
 
+			sendKey: function(key, down) {
+				UI.rfb.sendKey(key, down);
+			},
+
 			xvpShutdown: function() {
 				UI.rfb.xvpShutdown();
 			},
