@@ -3812,7 +3812,7 @@ var RFB;
             } else {
                 this._fail("Server disconnected" + msg);
             }
-            this._sock.off('close');
+            
         }.bind(this));
         this._sock.on('error', function (e) {
             Util.Warn("WebSocket on-error event");
@@ -4086,7 +4086,7 @@ var RFB;
                 Util.Debug("Clearing disconnect timer");
                 clearTimeout(this._disconnTimer);
                 this._disconnTimer = null;
-                this._sock.off('close');  // make sure we don't get a double event
+                  // make sure we don't get a double event
             }
 
             switch (state) {
