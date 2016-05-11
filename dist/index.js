@@ -6967,6 +6967,7 @@ angular.module('noVNC', []).directive('vnc', ['$timeout', function($timeout) {
 						Interface.canvas.style.border = (scope.style ? scope.style.border || 'none': 'none');
 					}
 
+					rfb.get_mouse()._scale = rfb.get_display().get_scale();
 				}
 			};
 
