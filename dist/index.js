@@ -4068,7 +4068,7 @@ var RFB;
             }
 
             var cmsg = typeof(statusMsg) !== 'undefined' ? (" Msg: " + statusMsg) : "";
-            var fullmsg = "New state '" + state + "', was '" + oldstate + "'." + cmsg;
+            cmsg = "New state '" + state + "', was '" + oldstate + "'." + cmsg;
             if (state === 'failed' || state === 'fatal') {
                 Util.Error(cmsg);
             } else {
